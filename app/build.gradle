@@ -1,0 +1,65 @@
+apply from: "../dependencies.gradle"
+apply plugin: plugin_app
+apply plugin: plugin_kotlin
+apply plugin: plugin_kotlin_ext
+apply plugin: plugin_kotlin_kapt
+
+android {
+    compileSdkVersion compileVersion
+    buildToolsVersion toolVersion
+    flavorDimensions "app"
+    defaultConfig {
+        applicationId application_id
+        minSdkVersion minTarget
+        targetSdkVersion targetVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        debug {
+            minifyEnabled false
+            applicationIdSuffix ".dev"
+            versionNameSuffix "-dev"
+        }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        demo {
+            buildConfigField "String", "API_URL", '"https://apiurl.com"'
+            dimension "app"
+        }
+        free {
+            buildConfigField "String", "API_URL", '"https://apiurl.com"'
+            dimension "app"
+            // Add free version specifics
+        }
+        paid {
+            buildConfigField "String", "API_URL", '"https://apiurl.com"'
+            dimension "app"
+            // Add paid version specifics
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility = java_compatibility
+        targetCompatibility = java_compatibility
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    //app modules
+    implementation project(":app_common")
+    // app deps
+    implementation okhttp_logging
+}
