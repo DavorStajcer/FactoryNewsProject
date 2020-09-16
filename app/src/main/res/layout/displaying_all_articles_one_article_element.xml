@@ -26,10 +26,13 @@
         srcFromUrl="@{article.urlToImage}"
         />
 
-    <TextView
+    <hr.davor_news.factory.adapters.CustomTextView
         android:id="@+id/tvArticle"
+        android:theme="@style/Theme.AppCompat"
         android:layout_width="300dp"
         android:layout_height="100dp"
+        android:paddingStart="20dp"
+        android:paddingEnd="20dp"
         android:textSize="15dp"
         android:gravity="center"
         android:text="@{article.title}"/>

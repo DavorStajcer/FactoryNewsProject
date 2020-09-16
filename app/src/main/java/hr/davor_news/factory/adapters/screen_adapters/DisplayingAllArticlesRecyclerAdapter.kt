@@ -1,6 +1,9 @@
 package hr.davor_news.factory.adapters.screen_adapters
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.LinearGradient
+import android.graphics.Shader
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +24,7 @@ class DisplayingAllArticlesRecyclerAdapter (
         return NewsViewHolder(articleBindingElement)
     }
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
         (holder as NewsViewHolder).bind(position)
     }
     override fun getItemCount(): Int {

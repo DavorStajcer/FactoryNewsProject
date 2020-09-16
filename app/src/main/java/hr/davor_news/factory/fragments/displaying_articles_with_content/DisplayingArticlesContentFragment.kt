@@ -29,7 +29,6 @@ class DisplayingArticlesContentFragment() : BaseFragment<DisplayingArticlesConte
             recyclerAdapter.changeArticles(it)
         })
         viewModel.screenAdapter.scrollToPickedArticle.observe(viewLifecycleOwner, Observer {
-            Log.i("click","Scrolling to article.")
             scrollableArticlesRecyclcerView.layoutManager?.scrollToPosition(it)
         })
     }

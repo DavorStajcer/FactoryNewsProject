@@ -1,5 +1,6 @@
 package hr.davor_news.factory.fragments.displaying_all_articles
 
+import android.util.Log
 import hr.bagy94.android.base.viewmodel.BaseViewModel
 import hr.bagy94.android.base.viewmodel.RepositoryVM
 import hr.davor_news.android.common.router.AppRouter
@@ -48,6 +49,7 @@ class DisplayingAllArticlesViewModel(
             .subscribeToRepo()
     }
     override fun changeFragments(positionOfArticleClicked: Int) {
+        Log.i("position","Save position -> $positionOfArticleClicked")
         repository.saveOrUpdatePickedArticlePosition(positionOfArticleClicked)
         if (screenAdapter.changeFragments.value == null)
             screenAdapter.changeFragments.value = false

@@ -1,5 +1,6 @@
 package hr.davor_news.factory.fragments.displaying_articles_with_content
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import hr.bagy94.android.base.viewmodel.BaseViewModel
@@ -37,7 +38,7 @@ class DisplayingArticlesContentViewModel(
     private val positionChangeListener by lazy {
         RealmChangeListener<RealmResults<PositionOfArticleOpened>> {
             if(positionResult.isLoaded){
-                screenAdapter.scrollToPickedArticle.value = it.first()?.positionId
+                screenAdapter.scrollToPickedArticle.value = it.first()?.positionOfArticlePicked
             }
         }
     }

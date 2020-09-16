@@ -67,7 +67,7 @@ class NewsActivityViewModel(
     }
     override fun <T> onAPIError(error: APIError<T>) {
         super.onAPIError(error)
-        screenAdapter.showErrorFragment.value = true
+     //   screenAdapter.showErrorFragment.value = true
     }
 
 }
