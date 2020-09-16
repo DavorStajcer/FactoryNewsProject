@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout>
+
+    <data>
+        <variable
+            name="article"
+            type="hr.davor_news.factory.model.local_database.Article" />
+    </data>
+
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/ivOneArticle"
+        android:layout_width="match_parent"
+        srcFromUrl="@{article.urlToImage}"
+        android:layout_height="200dp" />
+
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:text="@{article.title}"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="15dp"/>
+
+        <TextView
+            android:id="@+id/tvBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{article.description}"
+            android:layout_marginTop="15dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="15dp"
+            android:textSize="20sp"
+          />
+
+        <TextView
+        android:id="@+id/tvPublishedAt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@{article.publishedAt}"
+        android:layout_marginTop="15dp"
+        android:gravity="end|bottom"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="15dp"
+        android:textSize="20sp"
+            />
+
+
+</LinearLayout>
+
+</layout>

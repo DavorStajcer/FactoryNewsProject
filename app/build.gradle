@@ -3,18 +3,22 @@ apply plugin: plugin_app
 apply plugin: plugin_kotlin
 apply plugin: plugin_kotlin_ext
 apply plugin: plugin_kotlin_kapt
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion compileVersion
     buildToolsVersion toolVersion
     flavorDimensions "app"
     defaultConfig {
-        applicationId application_id
+        applicationId "hr.davor_news.factory_news"
         minSdkVersion minTarget
         targetSdkVersion targetVersion
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildFeatures {
+        dataBinding true
     }
     buildTypes {
         debug {
@@ -30,16 +34,16 @@ android {
 
     productFlavors {
         demo {
-            buildConfigField "String", "API_URL", '"https://apiurl.com"'
+            buildConfigField "String", "API_URL", '"https://newsapi.org/"'
             dimension "app"
         }
         free {
-            buildConfigField "String", "API_URL", '"https://apiurl.com"'
+            buildConfigField "String", "API_URL", '"https://newsapi.org/"'
             dimension "app"
             // Add free version specifics
         }
         paid {
-            buildConfigField "String", "API_URL", '"https://apiurl.com"'
+            buildConfigField "String", "API_URL", '"https://newsapi.org/"'
             dimension "app"
             // Add paid version specifics
         }
@@ -57,9 +61,27 @@ android {
 }
 
 dependencies {
+    def glide_version = '4.11.0'
+    def constraint_layout_version = '2.0.1'
+    def lifecycle_version = "2.2.0"
+
+    implementation 'com.github.bagy94:android-base:<version>'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //app modules
     implementation project(":app_common")
     // app deps
     implementation okhttp_logging
+    //Glide
+    implementation "com.github.bumptech.glide:glide:$glide_version"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glide_version"
+    //constraintLayout
+    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
+
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycle_version"
+
+
+
 }

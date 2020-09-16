@@ -1,2 +1,2 @@
 include ':app', ':app_common'
-rootProject.name='NewApp'
+rootProject.name='FactoryNewsApp'

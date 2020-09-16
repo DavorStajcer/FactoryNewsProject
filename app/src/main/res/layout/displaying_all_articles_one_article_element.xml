@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="article"
+            type="hr.davor_news.factory.model.local_database.Article" />
+        <variable
+            name="viewModel"
+            type="hr.davor_news.factory.fragments.displaying_all_articles.DisplayingAllArticlesViewModel" />
+        <variable
+            name="positionOfArticlePicked"
+            type="Integer" />
+    </data>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{ () -> viewModel.changeFragments(positionOfArticlePicked)}">
+
+    <ImageView
+        android:id="@+id/ivArticle"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        srcFromUrl="@{article.urlToImage}"
+        />
+
+    <TextView
+        android:id="@+id/tvArticle"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:textSize="15dp"
+        android:gravity="center"
+        android:text="@{article.title}"/>
+    </LinearLayout>
+
+</layout>
