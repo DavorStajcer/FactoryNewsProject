@@ -14,7 +14,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import io.realm.RealmChangeListener
 import io.realm.RealmResults
 
-class DisplayingArticlesWithContentViewModel(
+class DisplayingArticlesContentViewModel(
     override val router: AppRouter,
     override val screenAdapter: ArticlesWithContentScreenAdapter,
     override val repository: NewsRepository
@@ -53,7 +53,7 @@ class DisplayingArticlesWithContentViewModel(
            .observeOn(AndroidSchedulers.mainThread())
            .doOnNext {
                 articleResults = it
-               for((index,article) in articleResults.withIndex())
+               for(article in articleResults)
                    tempList.add(article)
                screenAdapter.listOfArticles.value = tempList
                articleResults.addChangeListener(realmArticlesChangedListener)

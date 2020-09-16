@@ -11,13 +11,13 @@ import hr.davor_news.android.common.error.AppErrorHandler
 import hr.davor_news.android.common.router.AppRouter
 import hr.davor_news.android.common.router.AppRouterImpl
 import hr.davor_news.android.common.sharedpref.AppSharedPreference
-import hr.davor_news.factory.adapters.screen_adapters.ArticlesRecyclerAdapter
+import hr.davor_news.factory.adapters.screen_adapters.DisplayingAllArticlesRecyclerAdapter
 import hr.davor_news.factory.error.AppErrorHandlerImpl
 import hr.davor_news.factory.fragments.displaying_all_articles.DisplayingAllArticlesFragment
 import hr.davor_news.factory.fragments.displaying_all_articles.DisplayingAllArticlesViewModel
-import hr.davor_news.factory.fragments.displaying_articles_with_content.DisplayingArticlesWithContent
-import hr.davor_news.factory.adapters.screen_adapters.DisplayingScrollableArticlesRecyclerAdapter
-import hr.davor_news.factory.fragments.displaying_articles_with_content.DisplayingArticlesWithContentViewModel
+import hr.davor_news.factory.fragments.displaying_articles_with_content.DisplayingArticlesContentFragment
+import hr.davor_news.factory.adapters.screen_adapters.DisplayingArticlesContentRecyclerAdapter
+import hr.davor_news.factory.fragments.displaying_articles_with_content.DisplayingArticlesContentViewModel
 import hr.davor_news.factory.model.remote_source.INewsAPI
 import hr.davor_news.factory.model.repositories.NewsRepository
 import hr.davor_news.factory.network.getNewsApi
@@ -53,7 +53,7 @@ val allArticlesModule = module {
     single<ScreenAdapter> { ScreenAdapter() }
     viewModel<DisplayingAllArticlesViewModel> { DisplayingAllArticlesViewModel(get(),get(),get()) }
     single { DisplayingAllArticlesFragment()}
-    single { ArticlesRecyclerAdapter(get()) }
+    single { DisplayingAllArticlesRecyclerAdapter(get()) }
 }
 
 val localArticleModule = module {
@@ -66,10 +66,10 @@ val repositoryModule = module {
 }
 
 val contentArticlesModule = module {
-    single<DisplayingArticlesWithContent> { DisplayingArticlesWithContent() }
-    single<DisplayingScrollableArticlesRecyclerAdapter> { DisplayingScrollableArticlesRecyclerAdapter(get()) }
+    single<DisplayingArticlesContentFragment> { DisplayingArticlesContentFragment() }
+    single<DisplayingArticlesContentRecyclerAdapter> { DisplayingArticlesContentRecyclerAdapter(get()) }
     single { ArticlesWithContentScreenAdapter() }
-    viewModel<DisplayingArticlesWithContentViewModel> { DisplayingArticlesWithContentViewModel(get(),get(),get()) }
+    viewModel<DisplayingArticlesContentViewModel> { DisplayingArticlesContentViewModel(get(),get(),get()) }
 }
 
 val errorModule = module {

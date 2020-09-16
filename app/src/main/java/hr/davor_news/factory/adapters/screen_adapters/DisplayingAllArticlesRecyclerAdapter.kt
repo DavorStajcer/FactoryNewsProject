@@ -9,7 +9,7 @@ import hr.davor_news.factory.fragments.displaying_all_articles.DisplayingAllArti
 import hr.davor_news.factory.model.local_database.Article
 import hr.davor_news.factory.model.remote_source.NetworkArticle
 
-class ArticlesRecyclerAdapter (
+class DisplayingAllArticlesRecyclerAdapter (
     val context : Context,
     var listOfArticles : List<Article> = listOf()
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() , IOnArticlesInRecyclerChangedListener {

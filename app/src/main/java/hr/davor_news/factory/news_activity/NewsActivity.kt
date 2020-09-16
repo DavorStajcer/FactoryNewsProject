@@ -7,7 +7,7 @@ import hr.bagy94.android.base.activity.BaseActivity
 import hr.bagy94.android.base.fragment.BaseFragment
 import hr.davor_news.factory.R
 import hr.davor_news.factory.fragments.displaying_all_articles.DisplayingAllArticlesFragment
-import hr.davor_news.factory.fragments.displaying_articles_with_content.DisplayingArticlesWithContent
+import hr.davor_news.factory.fragments.displaying_articles_with_content.DisplayingArticlesContentFragment
 import hr.davor_news.factory.fragments.displaying_error.DisplayingErrorDialog
 import hr.davor_news.factory.fragments.displaying_error.IOnDialogDismissedListener
 import org.koin.android.ext.android.inject
@@ -23,12 +23,12 @@ class NewsActivity() : BaseActivity(), IChangeFragmentListener , IOnDialogDismis
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val displayingScrollableArticlesFragment : DisplayingArticlesWithContent by inject()
+        val displayingScrollableArticlesFragment : DisplayingArticlesContentFragment by inject()
         setUpListeners()
         setUpViewModelObservers(displayingScrollableArticlesFragment)
         displayingErrorFragment.onDialogDismissedListener = this
     }
-    private fun setUpViewModelObservers(displayingScrollableArticlesFragment : DisplayingArticlesWithContent){
+    private fun setUpViewModelObservers(displayingScrollableArticlesFragment : DisplayingArticlesContentFragment){
         viewModel.screenAdapter.changeFragmets.observe(this, Observer {
             when(it!!){
                 Fragments.ALL_ARTICLES -> changeFragmentTo(displayingAllArticlesFragment)
@@ -45,7 +45,7 @@ class NewsActivity() : BaseActivity(), IChangeFragmentListener , IOnDialogDismis
     }
     private fun changeFragmentTo(fragment : BaseFragment<*,*>) {
         supportFragmentManager.beginTransaction().apply {
-            if (fragment is DisplayingArticlesWithContent)
+            if (fragment is DisplayingArticlesContentFragment)
                 addToBackStack("Articles")
             replace(R.id.mainFragmentContainerView, fragment)
             setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)

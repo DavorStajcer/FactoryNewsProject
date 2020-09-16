@@ -6,7 +6,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import hr.bagy94.android.base.fragment.BaseFragment
 import hr.davor_news.factory.R
-import hr.davor_news.factory.adapters.screen_adapters.ArticlesRecyclerAdapter
+import hr.davor_news.factory.adapters.screen_adapters.DisplayingAllArticlesRecyclerAdapter
 import hr.davor_news.factory.databinding.DisplayingAllArticlesLayoutBinding
 import hr.davor_news.factory.news_activity.IChangeFragmentListener
 import kotlinx.android.synthetic.main.displaying_all_articles_layout.*
@@ -20,13 +20,13 @@ class DisplayingAllArticlesFragment : BaseFragment<DisplayingAllArticlesViewMode
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val recyclerAdapter : ArticlesRecyclerAdapter by inject()
+        val recyclerAdapter : DisplayingAllArticlesRecyclerAdapter by inject()
         recyclerAdapter.viewModelReference = viewModel
         setUpNewsRecyclerView(recyclerAdapter)
         setListOfArticlesObserver(recyclerAdapter)
 
     }
-    private fun setListOfArticlesObserver(recyclerAdapter : ArticlesRecyclerAdapter){
+    private fun setListOfArticlesObserver(recyclerAdapter : DisplayingAllArticlesRecyclerAdapter){
         viewModel.screenAdapter.listOfArticles.observe(viewLifecycleOwner, Observer {
             recyclerAdapter.changeArticles(it)
         })
@@ -34,7 +34,7 @@ class DisplayingAllArticlesFragment : BaseFragment<DisplayingAllArticlesViewMode
                 changeFragmentListener!!.changeFragments()
         })
     }
-    private fun setUpNewsRecyclerView(recyclerAdapter: ArticlesRecyclerAdapter) {
+    private fun setUpNewsRecyclerView(recyclerAdapter: DisplayingAllArticlesRecyclerAdapter) {
         newsRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         newsRecyclerView.adapter = recyclerAdapter
     }
