@@ -19,14 +19,14 @@ class NewsActivity() : BaseActivity(), IChangeFragmentListener , IOnDialogDismis
     override val layoutId: Int = R.layout.news_activity_layout
     private val viewModel : NewsActivityViewModel by viewModel()
     private val displayingAllArticlesFragment : DisplayingAllArticlesFragment by inject()
-    private val displayingErrorFragment : DisplayingErrorDialog by inject()
+    private val errorDialog : DisplayingErrorDialog by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val displayingScrollableArticlesFragment : DisplayingArticlesContentFragment by inject()
         setUpListeners()
         setUpViewModelObservers(displayingScrollableArticlesFragment)
-        displayingErrorFragment.onDialogDismissedListener = this
+        errorDialog.onDialogDismissedListener = this
     }
     private fun setUpViewModelObservers(displayingScrollableArticlesFragment : DisplayingArticlesContentFragment){
         viewModel.screenAdapter.changeFragmets.observe(this, Observer {
@@ -37,7 +37,7 @@ class NewsActivity() : BaseActivity(), IChangeFragmentListener , IOnDialogDismis
         })
         viewModel.screenAdapter.showErrorFragment.observe(this, Observer {
             if(it)
-                displayingErrorFragment.getAlertDialog(this).show()
+                errorDialog.getAlertDialog(this).show()
         })
     }
     private fun setUpListeners(){

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
         <variable
@@ -10,7 +10,6 @@
 
 
 <LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -24,39 +23,27 @@
 
     <TextView
         android:id="@+id/tvTitle"
+        style="@style/ArticleContent.Headline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
         android:text="@{article.title}"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="15dp"/>
+        />
 
         <TextView
             android:id="@+id/tvBody"
+            style="@style/ArticleContent.Body"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@{article.description}"
-            android:layout_marginTop="15dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="15dp"
-            android:textSize="20sp"
           />
 
-        <TextView
+    <TextView
         android:id="@+id/tvPublishedAt"
+        style="@style/ArticleContent.Body.Publisher"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@{article.publishedAt}"
-        android:layout_marginTop="15dp"
-        android:gravity="end|bottom"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="15dp"
-        android:textSize="20sp"
-            />
+        />
 
 
 </LinearLayout>

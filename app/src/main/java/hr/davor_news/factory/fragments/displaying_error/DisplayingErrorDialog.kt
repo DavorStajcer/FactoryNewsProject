@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
 import android.content.DialogInterface
+import android.content.res.Resources
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.DialogFragment
@@ -16,12 +17,11 @@ class DisplayingErrorDialog {
     private val alertDialog : AlertDialog? = null
 
     fun getAlertDialog(context: Context) : AlertDialog {
-        return alertDialog ?:  AlertDialog.Builder(context, R.style.AlertDialogTheme)
+        return alertDialog ?:  AlertDialog.Builder(context,R.style.NewsAlertDialog)
                     .setTitle("Greška")
                     .setMessage("Ups, došlo je do pogreške")
-                    .setPositiveButton("ok",
+                    .setPositiveButton("U REDU",
                         DialogInterface.OnClickListener { dialog, which ->
-                            Log.i("click","OK button pressed.")
                             onDialogDismissedListener?.onDialogDismissed()
                         })
             .setCancelable(false)

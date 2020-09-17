@@ -33,7 +33,7 @@ class NewsActivityViewModel(
     }
 
     private fun makeNetworkCallEveryFiveMinutes(){
-        Observable.interval(5, TimeUnit.SECONDS)
+        Observable.interval(10, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(){
@@ -67,7 +67,7 @@ class NewsActivityViewModel(
     }
     override fun <T> onAPIError(error: APIError<T>) {
         super.onAPIError(error)
-     //   screenAdapter.showErrorFragment.value = true
+        screenAdapter.showErrorFragment.value = true
     }
 
 }

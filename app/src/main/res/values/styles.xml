@@ -11,5 +11,38 @@
     </style>
     <style name="DisplayingAllArticlesText" parent="TextAppearance.AppCompat">
         <item name="android:textSize">20sp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:textColor">@color/pure_black</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:gravity">center</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:maxLines">2</item>
+    </style>
+    <style name="ArticleContent" parent="TextAppearance.AppCompat">
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginRight">20dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+    </style>
+    <style name="ArticleContent.Headline" >
+        <item name="android:textSize">23sp</item>
+        <item name="fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/pure_black</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+    <style name="ArticleContent.Body">
+        <item name="android:textSize">20sp</item>
+        <item name="fontFamily">sans-serif-light</item>
+        <item name="android:textColor">@color/articleContent</item>
+    </style>
+    <style name="ArticleContent.Body.Publisher">
+        <item name="android:gravity">end|bottom</item>
+    </style>
+    <style name="NewsAlertDialog" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+        <item name="colorPrimary">#8b9fa6</item>
+        <item name="colorPrimaryDark">#00c3a1</item>
+        <item name="colorAccent">#00c3a1</item>
     </style>
 </resources>
+
