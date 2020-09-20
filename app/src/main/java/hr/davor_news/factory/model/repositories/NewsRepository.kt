@@ -17,7 +17,7 @@ import java.util.*
 
 class NewsRepository(errorHandler: AppErrorHandler,private val newsApi :INewsAPI, private val realmInstance : Realm) : BaseRepository(errorHandler){
     fun getArticlesFromNetwork() = newsApi.getNews()
-    fun saveOrUpdateLocalArticles(articles: List<NetworkArticle>, positionOfArticlePicked : Int? = null){
+    fun saveOrUpdateLocalArticles(articles: List<NetworkArticle>){
         realmInstance.executeTransaction {
             val results : RealmResults<Article> = it.where(Article::class.java).findAll()
             if(results.isNullOrEmpty()){
@@ -32,7 +32,6 @@ class NewsRepository(errorHandler: AppErrorHandler,private val newsApi :INewsAPI
                     results[index]?.url = member.url
                     results[index]?.urlToImage = member.urlToImage
                 }
-                saveOrUpdateArticlesToDatabase(results,it)
             }
         }
     }
@@ -43,7 +42,6 @@ class NewsRepository(errorHandler: AppErrorHandler,private val newsApi :INewsAPI
                 it.copyToRealmOrUpdate(PositionOfArticleOpened(positionOfArticlePicked = position))
             else{
                 results.positionOfArticlePicked = position
-                it.copyToRealmOrUpdate(results)
             }
         }
     }
