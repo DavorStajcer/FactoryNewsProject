@@ -1,19 +1,14 @@
 package hr.davor_news.factory.fragments.displaying_articles_with_content
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import hr.bagy94.android.base.error.APIError
 import hr.bagy94.android.base.viewmodel.BaseViewModel
 import hr.bagy94.android.base.viewmodel.RepositoryVM
-import hr.bagy94.android.base.viewmodel.ScreenAdapter
 import hr.davor_news.android.common.router.AppRouter
-import hr.davor_news.factory.model.local_database.Article
-import hr.davor_news.factory.model.local_database.PositionOfArticleOpened
 import hr.davor_news.factory.model.repositories.NewsRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.realm.RealmChangeListener
-import io.realm.RealmResults
+import java.util.concurrent.TimeUnit
 
 class DisplayingArticlesContentViewModel(
     override val router: AppRouter,
@@ -21,55 +16,44 @@ class DisplayingArticlesContentViewModel(
     override val repository: NewsRepository
 ) : BaseViewModel<AppRouter>(), RepositoryVM {
 
-
-    private lateinit var articleResults : RealmResults<Article>
-    private val tempList = mutableListOf<Article>()
-    private lateinit var positionResult : RealmResults<PositionOfArticleOpened>
-
-    private val realmArticlesChangedListener by lazy {
-        RealmChangeListener<RealmResults<Article>> { it ->
-            if(articleResults.isLoaded){
-                for((index,article) in it.withIndex())
-                    tempList[index] = article
-                screenAdapter.listOfArticles.value = tempList
-            }
-        }
-    }
-    private val positionChangeListener by lazy {
-        RealmChangeListener<RealmResults<PositionOfArticleOpened>> {
-            if(positionResult.isLoaded){
-                screenAdapter.scrollToPickedArticle.value = it.first()?.positionOfArticlePicked
-            }
-        }
-    }
-
     init {
-        initializeRealmArticlesChangedListener()
-        initializeRealmPositionOfArticleOpenedListener()
+        makeNetworkCallEveryFiveMinutes()
+        setUpDatabaseObservable()
+    }
+    private fun makeNetworkCall() {
+        repository.getArticlesFromNetwork()
+            .toObservable()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeToRepo()
+    }
+    private fun makeNetworkCallEveryFiveMinutes() {
+        addDisposable(
+            Observable.interval(15, TimeUnit.SECONDS)
+                .doOnNext {
+                    makeNetworkCall()
+                }.doOnSubscribe {
+                    makeNetworkCall()
+                }.subscribe()
+        )
     }
 
-     private fun initializeRealmArticlesChangedListener(){
-       repository.getArticles().
-           subscribeOn(Schedulers.io())
-           .observeOn(AndroidSchedulers.mainThread())
-           .doOnNext {
-                articleResults = it
-               for(article in articleResults)
-                   tempList.add(article)
-               screenAdapter.listOfArticles.value = tempList
-               articleResults.addChangeListener(realmArticlesChangedListener)
-            }.subscribeToRepo()
-    }
-    private fun initializeRealmPositionOfArticleOpenedListener(){
-        repository.getPositionOfArticleOpened().
-            subscribeOn(Schedulers.io())
+    private fun setUpDatabaseObservable(){
+        repository.getDatabaseObservable()
+            .toObservable()
+            .subscribeOn(AndroidSchedulers.mainThread())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
-                positionResult = it
-                screenAdapter.scrollToPickedArticle.value = positionResult.first()?.positionOfArticlePicked
-                positionResult.addChangeListener(positionChangeListener)
+                screenAdapter.listOfArticles.value = it
             }
             .subscribeToRepo()
     }
-
+    override fun <T> onAPIError(error: APIError<T>) {
+        super.onAPIError(error)
+        if(screenAdapter.showNetworkErrorDialog.value != true) //if you try to show error dialog while the other one is displaying you will get an error
+            screenAdapter.showNetworkErrorDialog.value = true
+    }
+    fun onDialogDismissed(){
+        screenAdapter.showNetworkErrorDialog.value = false
+    }
 }

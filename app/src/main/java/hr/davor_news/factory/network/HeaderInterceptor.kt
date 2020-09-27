@@ -7,7 +7,6 @@ import okhttp3.Response
 internal class HeaderInterceptor (private val sharedPreference: AppSharedPreference): Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         return chain.proceed(chain.request().newBuilder()
-            .addHeader("Cache-Control", "public, max-age=" + 7)
             .addHeader(ACCEPT, JSON)
             .apply {
                 sharedPreference.authToken?.let {

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import hr.davor_news.factory.databinding.DisplayingArticlesContentOneArticleElementBinding
 import hr.davor_news.factory.model.local_database.Article
+import hr.davor_news.factory.model.remote_source.NetworkArticle
 
 class DisplayingArticlesContentRecyclerAdapter(
     private val context : Context,

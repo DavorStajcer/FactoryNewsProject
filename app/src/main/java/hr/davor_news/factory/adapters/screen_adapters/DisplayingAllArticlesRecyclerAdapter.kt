@@ -1,16 +1,12 @@
 package hr.davor_news.factory.adapters.screen_adapters
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.LinearGradient
-import android.graphics.Shader
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import hr.davor_news.factory.databinding.DisplayingAllArticlesOneArticleElementBinding
 import hr.davor_news.factory.fragments.displaying_all_articles.DisplayingAllArticlesViewModel
 import hr.davor_news.factory.model.local_database.Article
-import hr.davor_news.factory.model.remote_source.NetworkArticle
 
 class DisplayingAllArticlesRecyclerAdapter (
     val context : Context,
@@ -38,7 +34,6 @@ class DisplayingAllArticlesRecyclerAdapter (
             articleBindingElement.executePendingBindings()
         }
     }
-
 
     override fun changeArticles(newListOfArticles : List<Article>){
         listOfArticles = newListOfArticles

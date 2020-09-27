@@ -8,7 +8,8 @@ import hr.davor_news.android.common.error.AppErrorHandler
 
 class AppErrorHandlerImpl : AppErrorHandler {
     override fun handleAPIError(errorBody: String?, httpCode: Int): Error {
-      return object : APIError<String>(errorObject = errorBody,httpCode = httpCode){
+        Log.i("someTag","Handeling API error")
+        return object : APIError<String>(errorObject = errorBody,httpCode = httpCode){
       }
     }
 }

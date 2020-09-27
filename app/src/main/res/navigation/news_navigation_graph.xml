@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/app_navigation"
+    app:startDestination="@id/displayingAllArticlesFragment">
+
+    <fragment
+        android:id="@+id/displayingAllArticlesFragment"
+        android:name="hr.davor_news.factory.fragments.displaying_all_articles.DisplayingAllArticlesFragment"
+        android:label="DisplayingAllArticlesFragment" >
+        <action
+            android:id="@+id/openArticle"
+            app:destination="@id/displayingArticlesContentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/displayingArticlesContentFragment"
+        android:name="hr.davor_news.factory.fragments.displaying_articles_with_content.DisplayingArticlesContentFragment"
+        android:label="DisplayingArticlesContentFragment" >
+        <argument android:name="positionOfPickedArticle"
+            app:argType="integer"
+            android:defaultValue="0"/>
+    </fragment>
+</navigation>

@@ -8,6 +8,7 @@ import org.koin.android.ext.android.get
 import org.koin.core.module.Module
 
 class App : BaseApp() {
+
     override val localeManager by lazy { get<LocaleManager>() }
     override fun onCreate() {
         super.onCreate()
@@ -19,11 +20,10 @@ class App : BaseApp() {
             appModule,
             remoteModule,
             allArticlesModule,
-            localArticleModule,
             repositoryModule,
             errorModule,
-            newsActivityModule,
             contentArticlesModule
         )
     }
+
 }

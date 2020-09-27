@@ -1,15 +1,15 @@
 package hr.davor_news.factory.fragments.displaying_all_articles
 
-import android.util.Log
+import hr.bagy94.android.base.error.APIError
+import hr.bagy94.android.base.navigation.NavDirectionsWrapper
 import hr.bagy94.android.base.viewmodel.BaseViewModel
 import hr.bagy94.android.base.viewmodel.RepositoryVM
 import hr.davor_news.android.common.router.AppRouter
-import hr.davor_news.factory.model.local_database.Article
 import hr.davor_news.factory.model.repositories.NewsRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import io.realm.RealmResults
-import io.realm.RealmChangeListener
+import java.util.concurrent.TimeUnit
 
 
 class DisplayingAllArticlesViewModel(
@@ -18,45 +18,53 @@ class DisplayingAllArticlesViewModel(
     override val repository: NewsRepository
 ) : BaseViewModel<AppRouter>(), RepositoryVM, IOnArticleClickedListener {
 
-    private lateinit var results : RealmResults<Article>
-    private val tempList = mutableListOf<Article>()
-
-    private val articlesRealmChangeListener by lazy {
-        RealmChangeListener<RealmResults<Article>> { it ->
-            if(results.isLoaded){
-                for((index,article) in it.withIndex())
-                    tempList[index] = article
-                screenAdapter.listOfArticles.value = tempList
-            }
-        }
-    }
-
     init {
-        initializeRealmChangesListener()
+        makeNetworkCallEveryFiveMinutes()
+        setUpDatabaseObservable()
     }
 
-    private fun initializeRealmChangesListener(){
-        repository.getArticles()
+    private fun makeNetworkCallEveryFiveMinutes() {
+        addDisposable(
+            Observable.interval(15, TimeUnit.SECONDS)
+                .doOnNext {
+                    makeNetworkCall()
+                }.doOnSubscribe {
+                    makeNetworkCall()
+                }.subscribe()
+        )
+    }
+    private fun makeNetworkCall() {
+        repository.getArticlesFromNetwork()
+            .toObservable()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            .subscribeToRepo()
+    }
+    private fun setUpDatabaseObservable() {
+        repository.getDatabaseObservable()
+            .toObservable()
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
-                results = it
-                for(article in results)
-                    tempList.add(article)
-                screenAdapter.listOfArticles.value = tempList
-                results.addChangeListener(articlesRealmChangeListener)
+                screenAdapter.listOfArticles.value = it
             }
             .subscribeToRepo()
     }
-    override fun changeFragments(positionOfArticleClicked: Int) {
-        Log.i("position","Save position -> $positionOfArticleClicked")
-        repository.saveOrUpdatePickedArticlePosition(positionOfArticleClicked)
-        if (screenAdapter.changeFragments.value == null)
-            screenAdapter.changeFragments.value = false
-        else
-            screenAdapter.changeFragments.value = !screenAdapter.changeFragments.value!!
+    override fun <T> onAPIError(error: APIError<T>) {
+        super.onAPIError(error)
+        if (screenAdapter.showNetworkErrorDialog.value != true) //if you try to show error dialog while the other one is displaying you will get an error
+            screenAdapter.showNetworkErrorDialog.value = true
     }
-
+    fun onDialogDismissed() {
+        screenAdapter.showNetworkErrorDialog.value = false
+    }
+    override fun onArticleClicked(positionOfArticleClicked: Int) {
+        router.navigationDirection.value = NavDirectionsWrapper(
+            navDirections = DisplayingAllArticlesFragmentDirections.openArticle(
+                positionOfArticleClicked
+            )
+        )
+    }
 }
 
 

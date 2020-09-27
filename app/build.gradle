@@ -3,6 +3,7 @@ apply plugin: plugin_app
 apply plugin: plugin_kotlin
 apply plugin: plugin_kotlin_ext
 apply plugin: plugin_kotlin_kapt
+apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'realm-android'
 
 android {
@@ -64,9 +65,15 @@ dependencies {
     def glide_version = '4.11.0'
     def constraint_layout_version = '2.0.1'
     def lifecycle_version = "2.2.0"
+    def nav_version = "2.3.0"
 
     implementation 'com.github.bagy94:android-base:<version>'
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // Kotlin
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
     //app modules
     implementation project(":app_common")
     // app deps

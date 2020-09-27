@@ -1,7 +1,5 @@
 package hr.davor_news.factory.model.remote_source
 
-import io.realm.annotations.Ignore
-
 
 class NetworkArticle (
     var author : String = "Daca",

@@ -3,4 +3,5 @@
     <color name="pure_black">#000000</color>
     <color name="almost_white">#d9d9d9</color>
     <color name="articleContent">#4d4d4d</color>
+    <color name="toolbarBackground">#0456e0</color>
 </resources>
