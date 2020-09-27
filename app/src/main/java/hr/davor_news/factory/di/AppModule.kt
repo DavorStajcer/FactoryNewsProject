@@ -37,7 +37,7 @@ val appModule = module {
 }
 
 val remoteModule = module {
-    single<Retrofit> { provideRetrofit(get(),get()) }
+    single<Retrofit> { provideRetrofit(get()) }
     single<INewsAPI> { getNewsApi(get()) }
 }
 
