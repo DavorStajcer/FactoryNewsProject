@@ -29,7 +29,7 @@ class DisplayingArticlesContentViewModel(
     }
     private fun makeNetworkCallEveryFiveMinutes() {
         addDisposable(
-            Observable.interval(15, TimeUnit.SECONDS)
+            Observable.interval(5, TimeUnit.MINUTES)
                 .doOnNext {
                     makeNetworkCall()
                 }.doOnSubscribe {
