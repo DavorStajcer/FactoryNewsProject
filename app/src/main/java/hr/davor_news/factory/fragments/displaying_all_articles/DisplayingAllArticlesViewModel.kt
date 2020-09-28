@@ -32,13 +32,13 @@ class DisplayingAllArticlesViewModel(
         repository.getArticlesFromNetwork()
             .toObservable()
             .subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribeToRepo()
     }
     private fun setUpDatabaseObserver() {
      repository.getDatabaseObservable()
             .toObservable()
-            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
                 Log.i("checkShould","TOn next -> $it")

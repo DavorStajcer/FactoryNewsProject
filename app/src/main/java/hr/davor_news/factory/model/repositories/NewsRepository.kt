@@ -17,7 +17,7 @@ class NewsRepository(errorHandler: AppErrorHandler,private val newsApi :INewsAPI
 
     fun shouldNetworkCallBeMade() : Boolean{
         var shouldMakeNetworkCall = false
-        Realm.getInstance(realmConfiguration).executeTransactionAsync{
+        Realm.getInstance(realmConfiguration).executeTransaction{
             val timeOfLastNetworkCall : ArticleData? = it.where(ArticleData::class.java).equalTo("dataId",1.toInt()).findFirst()
             if(timeOfLastNetworkCall == null)
                 shouldMakeNetworkCall = true
@@ -41,7 +41,7 @@ class NewsRepository(errorHandler: AppErrorHandler,private val newsApi :INewsAPI
            if(data == null){
                val realmListOfArticles = RealmList<Article>()
                for((index,member) in articles.withIndex()){
-                   Log.i("checkShould","This is loaded. Size of articles arry from network -> ${articles.size}")
+                   Log.i("checkShould","This is loaded. Size of articles arry from network -> ${articles.size}") //size is 10
                    realmListOfArticles.add(
                        it.createObject(Article::class.java,Article(
                            articleId = index + 1,

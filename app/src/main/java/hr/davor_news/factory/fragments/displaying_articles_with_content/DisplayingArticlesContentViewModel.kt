@@ -35,7 +35,7 @@ class DisplayingArticlesContentViewModel(
     private fun setUpDatabaseObserver(){
        repository.getDatabaseObservable()
             .toObservable()
-            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
                 screenAdapter.listOfArticles.value = it
