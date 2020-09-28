@@ -9,6 +9,7 @@ import hr.davor_news.android.common.router.AppRouter
 import hr.davor_news.factory.model.repositories.NewsRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 
@@ -18,52 +19,36 @@ class DisplayingAllArticlesViewModel(
     override val screenAdapter: AllArticlesScreenAdapter,
     override val repository: NewsRepository
 ) : BaseViewModel<AppRouter>(), RepositoryVM, IOnArticleClickedListener {
-    private var disposable : Disposable? = null
 
     init {
         setUpDatabaseObserver()
     }
 
-    fun compareTimeAndMakeNetworkCall(){
-
-       disposable = Observable.fromAction<Unit> {
-            val timeForNetworkCall = System.currentTimeMillis() + 5000 //5 sekundi
-            while(System.currentTimeMillis() < timeForNetworkCall){
-                //do nothing
-            }
-        }.subscribeOn(Schedulers.io())
-            .observeOn(Schedulers.io())
-            .doOnSubscribe {
-                makeNetworkCall()
-            }.doOnComplete {
-                compareTimeAndMakeNetworkCall()
-            }.subscribe()
-
+    fun checkShouldNetworkCallBeMade(){
+        if(repository.shouldNetworkCallBeMade())
+            makeNetworkCall()
     }
-    fun disposeOfCompareObservable(){
-        disposable?.dispose()
-    }
-
     private fun makeNetworkCall() {
         repository.getArticlesFromNetwork()
             .toObservable()
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+            .observeOn(Schedulers.io())
             .subscribeToRepo()
     }
     private fun setUpDatabaseObserver() {
-        repository.getDatabaseObservable()
+     repository.getDatabaseObservable()
             .toObservable()
             .subscribeOn(AndroidSchedulers.mainThread())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext {
+                Log.i("checkShould","TOn next -> $it")
                 screenAdapter.listOfArticles.value = it
-            }
-            .subscribeToRepo()
+            }.doOnError {
+             Log.i("checkShould","Error while fetchin data from database.")
+         }.subscribeToRepo()
     }
     override fun <T> onAPIError(error: APIError<T>) {
         super.onAPIError(error)
-        if (screenAdapter.showNetworkErrorDialog.value != true) //if you try to show error dialog while the other one is displaying you will get an error
             screenAdapter.showNetworkErrorDialog.value = true
     }
     fun onDialogDismissed() {

@@ -61,8 +61,8 @@ val errorModule = module {
 
 fun getRealmConfiguration(): RealmConfiguration =
     RealmConfiguration.Builder()
-        .name("news_realm7.realm")
-        .schemaVersion(2)
+        .name("news_realm11.realm")
+        .schemaVersion(1)
         .build()
 
 

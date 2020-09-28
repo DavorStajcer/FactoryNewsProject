@@ -20,7 +20,7 @@ class DisplayingAllArticlesFragment : BaseFragment<DisplayingAllArticlesViewMode
 
     override fun onResume() {
         super.onResume()
-        viewModel.compareTimeAndMakeNetworkCall()
+        viewModel.checkShouldNetworkCallBeMade()
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -51,8 +51,4 @@ class DisplayingAllArticlesFragment : BaseFragment<DisplayingAllArticlesViewMode
         viewModel.onDialogDismissed()
     }
 
-    override fun onPause() {
-        super.onPause()
-        viewModel.disposeOfCompareObservable()
-    }
 }

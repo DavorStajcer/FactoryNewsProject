@@ -27,7 +27,7 @@ class DisplayingArticlesContentFragment() : BaseFragment<DisplayingArticlesConte
     override fun onResume() {
         super.onResume()
         shouldScrollToPickedArticle = true
-        viewModel.compareTimeAndMakeNetworkCall()
+        viewModel.checkShouldNetworkCallBeMade()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,9 +63,5 @@ class DisplayingArticlesContentFragment() : BaseFragment<DisplayingArticlesConte
     }
     override fun onDialogDismissed() {
         viewModel.onDialogDismissed()
-    }
-    override fun onPause() {
-        super.onPause()
-        viewModel.disposeOfCompareObservable()
     }
 }
