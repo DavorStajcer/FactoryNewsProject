@@ -23,6 +23,13 @@ class DisplayingArticlesContentFragment() : BaseFragment<DisplayingArticlesConte
     private val passedArguments : DisplayingArticlesContentFragmentArgs by navArgs()
     private var shouldScrollToPickedArticle : Boolean = true        //kada zovem u onResume() metodi " binding.articlesContentRecyclerView.scrollToPosition(passedArguments.positionOfPickedArticle)"
                                                                     //ne radi mi svaki puta, ako je zovem nakon sto se lista promjeni, radi, mozda ima veze sa notfyDataSetChanged ?
+
+    override fun onResume() {
+        super.onResume()
+        shouldScrollToPickedArticle = true
+        viewModel.compareTimeAndMakeNetworkCall()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerAdapter = DisplayingArticlesContentRecyclerAdapter(requireContext(), listOf())
@@ -57,9 +64,8 @@ class DisplayingArticlesContentFragment() : BaseFragment<DisplayingArticlesConte
     override fun onDialogDismissed() {
         viewModel.onDialogDismissed()
     }
-
-    override fun onResume() {
-        super.onResume()
-        shouldScrollToPickedArticle = true
+    override fun onPause() {
+        super.onPause()
+        viewModel.disposeOfCompareObservable()
     }
 }

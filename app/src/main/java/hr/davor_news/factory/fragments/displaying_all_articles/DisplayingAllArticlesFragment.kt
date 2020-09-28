@@ -18,6 +18,10 @@ class DisplayingAllArticlesFragment : BaseFragment<DisplayingAllArticlesViewMode
     override val layoutId: Int = R.layout.displaying_all_articles_layout
     override val viewModel  by viewModel<DisplayingAllArticlesViewModel>()
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.compareTimeAndMakeNetworkCall()
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val recyclerAdapter = DisplayingAllArticlesRecyclerAdapter(requireContext(),listOf())
@@ -45,5 +49,10 @@ class DisplayingAllArticlesFragment : BaseFragment<DisplayingAllArticlesViewMode
     }
     override fun onDialogDismissed() {
         viewModel.onDialogDismissed()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.disposeOfCompareObservable()
     }
 }

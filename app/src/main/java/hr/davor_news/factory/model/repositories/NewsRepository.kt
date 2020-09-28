@@ -38,7 +38,7 @@ class NewsRepository(errorHandler: AppErrorHandler,private val newsApi :INewsAPI
                     updateArticle(results[index]!!,null,member)
                 }
             }
-            it.close()
+           it.close()
         }
     }
     private fun updateArticle(article : Article, articleId : Int?, networkArticle: NetworkArticle){

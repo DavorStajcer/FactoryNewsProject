@@ -1,5 +1,6 @@
 package hr.davor_news.factory.fragments.displaying_all_articles
 
+import android.util.Log
 import hr.bagy94.android.base.error.APIError
 import hr.bagy94.android.base.navigation.NavDirectionsWrapper
 import hr.bagy94.android.base.viewmodel.BaseViewModel
@@ -8,8 +9,8 @@ import hr.davor_news.android.common.router.AppRouter
 import hr.davor_news.factory.model.repositories.NewsRepository
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.Disposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 
 
 class DisplayingAllArticlesViewModel(
@@ -17,22 +18,32 @@ class DisplayingAllArticlesViewModel(
     override val screenAdapter: AllArticlesScreenAdapter,
     override val repository: NewsRepository
 ) : BaseViewModel<AppRouter>(), RepositoryVM, IOnArticleClickedListener {
+    private var disposable : Disposable? = null
 
     init {
-        makeNetworkCallEveryFiveMinutes()
-        setUpDatabaseObservable()
+        setUpDatabaseObserver()
     }
 
-    private fun makeNetworkCallEveryFiveMinutes() {
-        addDisposable(
-            Observable.interval(5, TimeUnit.MINUTES)
-                .doOnNext {
-                    makeNetworkCall()
-                }.doOnSubscribe {
-                    makeNetworkCall()
-                }.subscribe()
-        )
+    fun compareTimeAndMakeNetworkCall(){
+
+       disposable = Observable.fromAction<Unit> {
+            val timeForNetworkCall = System.currentTimeMillis() + 5000 //5 sekundi
+            while(System.currentTimeMillis() < timeForNetworkCall){
+                //do nothing
+            }
+        }.subscribeOn(Schedulers.io())
+            .observeOn(Schedulers.io())
+            .doOnSubscribe {
+                makeNetworkCall()
+            }.doOnComplete {
+                compareTimeAndMakeNetworkCall()
+            }.subscribe()
+
     }
+    fun disposeOfCompareObservable(){
+        disposable?.dispose()
+    }
+
     private fun makeNetworkCall() {
         repository.getArticlesFromNetwork()
             .toObservable()
@@ -40,7 +51,7 @@ class DisplayingAllArticlesViewModel(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeToRepo()
     }
-    private fun setUpDatabaseObservable() {
+    private fun setUpDatabaseObserver() {
         repository.getDatabaseObservable()
             .toObservable()
             .subscribeOn(AndroidSchedulers.mainThread())
